@@ -2,9 +2,7 @@ const fetch = require("node-fetch");
 const http = require("http");
 const url = require("url");
 
-const PORT = 3000;
-
-const server = http.createServer(async (req, res) => {
+module.exports = async (req, res) => {
   // Parse the URL and extract query parameters
   const parsedUrl = url.parse(req.url, true);
   const { per_page, page } = parsedUrl.query;
@@ -20,8 +18,7 @@ const server = http.createServer(async (req, res) => {
     const data = await response.json();
 
     // Send the fetched data as the response
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(data));
+    res.json(data);
   } catch (error) {
     console.error("Error fetching data:", error);
 
@@ -29,9 +26,4 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(500, { "Content-Type": "text/plain" });
     res.end("Internal Server Error");
   }
-});
-
-// Start the server
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
-});
+};
